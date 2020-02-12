@@ -54,7 +54,7 @@ class _VoiceState extends State<Voice> {
     _speechRecognition.setRecognitionCompleteHandler(
       () => setState(() => _isListening = false),
     );
-
+  
     _speechRecognition.activate().then(
           (result) => setState(() => _isAvailable = result),
         );
@@ -71,32 +71,46 @@ class _VoiceState extends State<Voice> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 //botones para incizalizar ,cancelar y terminar conversacion
-                IconButton(
+                /*IconButton(
                     icon: Icon(Icons.stop),
                     onPressed: () {
-                      _speechRecognition.cancel().then((result) => setState(() {
-                            _isListening = result;
-                            resultado_texto = '';
-                          }));
-                    }),
+                      try {
+                        if (_isListening) {
+                          _speechRecognition
+                              .cancel()
+                              .then((result) => setState(() {
+                                    _isListening = result;
+                                    resultado_texto = '';
+                                  }));
+                        } else {
+                          setState(() => resultado_texto = '');
+                        }
+                      } catch (error) {
+                        print('${error.toString()} en linea 86');
+                      }
+                    }),*/
                 IconButton(
                     icon: Icon(Icons.mic),
                     onPressed: () {
-                      if (_isAvailable && !_isListening) {
-                        _speechRecognition
-                            .listen(locale: 'en_US')
-                            .then((result) => print('$result'));
-                      }
-                    }),
-                IconButton(
+                        if (_isAvailable && !_isListening) {
+                          _speechRecognition
+                              .listen(locale: 'en_US')
+                              .then((result) => print('$result'));
+                        }
+                    })
+                /*IconButton(
                   icon: Icon(Icons.pause),
                   onPressed: () {
-                    if (_isListening) {
-                      _speechRecognition.stop().then(
-                          (result) => setState(() => _isListening = result));
+                    try {
+                      if (_isListening) {
+                        _speechRecognition.stop().then(
+                            (result) => setState(() => _isListening = result));
+                      }
+                    } catch (error) {
+                      print('${error.toString()} en linea 113');
                     }
                   },
-                ),
+                ),*/
               ],
             ),
             Container(
