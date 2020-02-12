@@ -74,14 +74,10 @@ class _VoiceState extends State<Voice> {
                 IconButton(
                     icon: Icon(Icons.stop),
                     onPressed: () {
-                      if (_isListening) {
-                        _speechRecognition
-                            .cancel()
-                            .then((result) => setState(() {
-                                  _isListening = result;
-                                  resultado_texto = '';
-                                }));
-                      }
+                      _speechRecognition.cancel().then((result) => setState(() {
+                            _isListening = result;
+                            resultado_texto = '';
+                          }));
                     }),
                 IconButton(
                     icon: Icon(Icons.mic),
