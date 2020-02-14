@@ -23,7 +23,11 @@ class _VoiceState extends State<Voice> {
   bool _isAvailable = false;
   bool _isListening = false;
 
+  String placas =
+      '["placa","placas","matricula","matriculas","matrículas","matrícula"]';
+
   String resultado_texto = '';
+  String deb = '';
 
   @override
   void initState() {
@@ -52,9 +56,11 @@ class _VoiceState extends State<Voice> {
 
     // speechRecognition deja de escuchar por microfono
     _speechRecognition.setRecognitionCompleteHandler(
-      () => setState(() => _isListening = false),
+      () => setState(() => {
+            _isListening = false,
+          }),
     );
-  
+
     _speechRecognition.activate().then(
           (result) => setState(() => _isAvailable = result),
         );
@@ -92,11 +98,13 @@ class _VoiceState extends State<Voice> {
                 IconButton(
                     icon: Icon(Icons.mic),
                     onPressed: () {
-                        if (_isAvailable && !_isListening) {
-                          _speechRecognition
-                              .listen(locale: 'en_US')
-                              .then((result) => print('$result'));
-                        }
+                      if (_isAvailable && !_isListening) {
+                        _speechRecognition
+                            .listen(locale: 'en_US')
+                            .then((result) => setState(() => {
+                                  resultado_texto: '$result',
+                                }));
+                      }
                     })
                 /*IconButton(
                   icon: Icon(Icons.pause),
@@ -123,7 +131,16 @@ class _VoiceState extends State<Voice> {
                 resultado_texto,
                 style: TextStyle(fontSize: 24.0),
               ),
-            )
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.9,
+              height: MediaQuery.of(context).size.height * .2,
+              child: Text(
+                placas.contains('$resultado_texto')
+                    ? 'Debes buscar placas, dijiste $resultado_texto'
+                    : 'Palabra $resultado_texto no es un comando valido',
+              ),
+            ),
           ],
         ),
       ),
